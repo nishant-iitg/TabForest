@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TabForest</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            width: 300px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .stats {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 6px;
+        }
+
+        .label {
+            color: #666;
+        }
+
+        .value {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .description {
+            color: #666;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>TabForest</h1>
+    <p class="description">Transform your browsing into real-world impact</p>
+    <div class="stats">
+        <div class="stat-item">
+            <span class="label">Tabs Opened</span>
+            <span class="value" id="popupTabsCount">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="label">Trees Planted</span>
+            <span class="value" id="popupTreesPlanted">0</span>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
