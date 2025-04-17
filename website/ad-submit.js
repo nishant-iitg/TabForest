@@ -79,4 +79,34 @@ document.addEventListener('DOMContentLoaded', function() {
   linkInput.addEventListener('input', updatePreview);
 
   updatePreview(); // Initial preview
+
+  // Handle form submission to backend/Stripe
+  const adForm = document.getElementById('ad-submit-form');
+  adForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const data = {
+      headline: headlineInput.value,
+      description: descInput.value,
+      image_url: imgInput.value,
+      cta: ctaInput.value,
+      ad_link: linkInput.value,
+      impressions: impressionsInput.value,
+      price: priceInput.value
+    };
+    try {
+      const response = await fetch('http://localhost:4242/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      if (result.url) {
+        window.location.href = result.url;
+      } else {
+        alert('Error creating payment session. Please try again.');
+      }
+    } catch (err) {
+      alert('Could not connect to payment server. Please try again.');
+    }
+  });
 });
