@@ -15,17 +15,8 @@
             flex-direction: column;
         }
 
-        /* Trees container */
-        #trees-container {
-            display: none; /* Hide the container */
-        }
-
-        .tree {
-            display: none; /* Hide individual trees */
-        }
-
         .container {
-            margin-top: 80px; /* Adjust for quick links height */
+            margin-top: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -42,7 +33,9 @@
             display: flex;
             gap: 1rem;
             padding: 0.5rem;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
@@ -50,6 +43,89 @@
             max-width: 1200px;
             padding: 1rem;
             margin: 0 auto;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .quick-links:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            background: white;
+            border-radius: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            flex: 0 0 auto;
+            min-width: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+            pointer-events: none;
+        }
+
+        .quick-link:hover::before {
+            transform: translateX(100%);
+        }
+
+        .quick-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-link img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+        }
+
+        .quick-link:hover img {
+            transform: scale(1.1);
+        }
+
+        .quick-link.add-link {
+            background: #e3f2fd;
+            color: #1976d2;
+            cursor: pointer;
+        }
+
+        .quick-link.remove-link {
+            background: #fff3e0;
+            color: #f4511e;
+            cursor: pointer;
+        }
+
+        .quick-link.add-link:hover {
+            background: #bbdefb;
+        }
+
+        .quick-link.remove-link:hover {
+            background: #ffe0b2;
+        }
+
+        .quick-link.add-link img,
+        .quick-link.remove-link img {
+            width: 16px;
+            height: 16px;
         }
 
         .ad-container {
@@ -123,10 +199,13 @@
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
+            color: var(--fg) !important;
         }
 
         .counter {
-            background: white;
+            background: var(--card-bg) !important;
+            color: var(--fg) !important;
+            border: 1px solid var(--card-border) !important;
             padding: 0.75rem;
             border-radius: 6px;
             text-align: center;
@@ -141,7 +220,8 @@
         }
 
         .counter .label {
-            color: #666;
+            color: var(--fg) !important;
+            opacity: 0.7;
             font-size: 0.85rem;
             margin-bottom: 0.4rem;
         }
@@ -149,57 +229,7 @@
         .counter .value {
             font-size: 1.75rem;
             font-weight: bold;
-            color: #333;
-        }
-
-        /* Quick links styles */
-        .quick-link {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .quick-link:hover {
-            transform: translateY(-2px);
-        }
-
-        .quick-link img {
-            width: 20px;
-            height: 20px;
-            object-fit: contain;
-        }
-
-        .quick-link.add-link {
-            background: #e3f2fd;
-            color: #1976d2;
-            cursor: pointer;
-        }
-
-        .quick-link.remove-link {
-            background: #fff3e0;
-            color: #f4511e;
-            cursor: pointer;
-        }
-
-        .quick-link.add-link:hover {
-            background: #bbdefb;
-        }
-
-        .quick-link.remove-link:hover {
-            background: #ffe0b2;
-        }
-
-        .quick-link.add-link img,
-        .quick-link.remove-link img {
-            width: 16px;
-            height: 16px;
+            color: var(--fg) !important;
         }
     </style>
 </head>
@@ -209,7 +239,6 @@
             <!-- Quick links will be added here by script.js -->
         </div>
 
-        <!-- Ad container -->
         <div class="ad-container">
             <div class="ad">
                 <img id="adImage" src="" alt="Advertisement" class="ad-image">

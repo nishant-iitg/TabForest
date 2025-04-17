@@ -3,144 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="TabForest - A browser extension that turns your new tabs into steps toward healing the planet. Each tab shows a peaceful digital forest and contributes to real-world reforestation efforts.">
+    <meta name="description" content="TabForest - Plant trees with every new tab you open. Join the movement for a greener planet.">
     <title>TabForest - Plant Trees with Every Tab</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
-<body>
-    <header role="banner">
-        <nav class="navbar" role="navigation" aria-label="Main navigation">
-            <div class="container">
-                <div class="logo" role="img" aria-label="TabForest Logo">TabForest</div>
-                <div class="nav-links">
-                    <a href="#how-it-works" aria-label="Learn how TabForest works">How It Works</a>
-                    <a href="#impact" aria-label="View our environmental impact">Impact</a>
-                    <a href="#download" aria-label="Download TabForest extension">Download</a>
-                </div>
-            </div>
+<body class="dark-theme">
+    <header>
+        <nav class="navbar">
+            <a href="/" class="logo">TabForest</a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#impact">Impact</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            
         </nav>
     </header>
-
-    <main role="main">
-        <section class="hero" data-aos="fade-up" aria-label="Welcome to TabForest">
-            <div class="container">
-                <div class="hero-content">
-                    <h1>Plant Trees with Every Tab</h1>
-                    <p>Transform your browsing into real-world impact. Each new tab helps fund reforestation efforts.</p>
-                    <div class="cta-buttons">
-                        <a href="#download" class="primary-btn" role="button" aria-label="Download TabForest extension">Get the Extension</a>
-                        <a href="#how-it-works" class="secondary-btn" role="button" aria-label="Learn more about TabForest">Learn More</a>
-                    </div>
+    <main>
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <h1>Plant Trees with Every Tab</h1>
+                <p class="hero-subtext">Turn your browsing into a force for good. TabForest plants real trees as you open new tabs.</p>
+                <a href="#download" class="cta-btn">Get TabForest</a>
+            </div>
+        </section>
+        <section class="features-section" id="features">
+            <div class="feature-row">
+                <div class="feature-number">01</div>
+                <div class="feature-text">
+                    <h2>See Your Impact Grow</h2>
+                    <p>Every new tab you open helps plant real trees. Track your positive impact and watch your digital forest flourish.</p>
+                </div>
+            </div>
+            <div class="feature-row reverse">
+                <div class="feature-number">02</div>
+                <div class="feature-text">
+                    <h2>Effortless Eco-Friendly Browsing</h2>
+                    <p>TabForest runs quietly in the background, turning your everyday browsing into a force for good—no extra effort required.</p>
+                </div>
+            </div>
+            <div class="feature-row">
+                <div class="feature-number">03</div>
+                <div class="feature-text">
+                    <h2>Join a Global Movement</h2>
+                    <p>Be part of a community that’s already planted thousands of trees. Together, small actions make a world of difference.</p>
                 </div>
             </div>
         </section>
-
-        <section id="how-it-works" class="features" data-aos="fade-up" aria-label="How TabForest works">
-            <div class="container">
-                <h2>How It Works</h2>
-                <div class="features-grid" role="list">
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="100" role="listitem">
-                        <i class="fas fa-leaf" aria-hidden="true" title="Open a Tab"></i>
-                        <h3>Open a Tab</h3>
-                        <p>Every new tab opens a beautiful digital forest scene.</p>
-                    </div>
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="200" role="listitem">
-                        <i class="fas fa-ad" aria-hidden="true" title="See an Eco-Ad"></i>
-                        <h3>See an Ad</h3>
-                        <p>View sponsored messages from brands.</p>
-                    </div>
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="300" role="listitem">
-                        <i class="fas fa-tree" aria-hidden="true" title="Plant Trees"></i>
-                        <h3>Plant Trees</h3>
-                        <p>Your browsing helps fund real reforestation projects.</p>
-                    </div>
+        <section class="impact-section" id="impact">
+            <h2>Our Impact</h2>
+            <p class="impact-subtext">Together, we’re making the world greener—one tab at a time.</p>
+            <div class="impact-stats">
+                <div class="impact-stat">
+                    <span class="impact-number">12,345</span>
+                    <span class="impact-label">Trees Planted</span>
+                </div>
+                <div class="impact-stat">
+                    <span class="impact-number">98,765 kg</span>
+                    <span class="impact-label">CO₂ Offset</span>
+                </div>
+                <div class="impact-stat">
+                    <span class="impact-number">8,900+</span>
+                    <span class="impact-label">Community Members</span>
                 </div>
             </div>
         </section>
-
-        <section id="impact" class="impact" data-aos="fade-up" aria-label="Our environmental impact">
-            <div class="container">
-                <h2>Our Impact</h2>
-                <div class="impact-stats" role="list">
-                    <div class="stat-card" data-aos="fade-up" data-aos-delay="100" role="listitem">
-                        <div class="stat-number">1,000+</div>
-                        <div class="stat-label">Trees Planted</div>
+        <section class="download" id="download">
+            <h2>Download TabForest</h2>
+            <p>Start making a difference with every tab you open.</p>
+            <a href="#" class="cta-btn">Install for Chrome</a>
+        </section>
+        <section class="faq-section" id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-card">
+                    <div class="faq-question">
+                        <span class="faq-number">1.</span>
+                        <h3>How does TabForest make money?</h3>
                     </div>
-                    <div class="stat-card" data-aos="fade-up" data-aos-delay="200" role="listitem">
-                        <div class="stat-number">100%</div>
-                        <div class="stat-label">Revenue to Reforestation</div>
-                    </div>
-                    <div class="stat-card" data-aos="fade-up" data-aos-delay="300" role="listitem">
-                        <div class="stat-number">100+</div>
-                        <div class="stat-label">Happy Users</div>
+                    <div class="faq-answer">
+                        <p>TabForest generates revenue through non-intrusive advertisements displayed in new browser tabs. A significant portion (at least 50%) of this advertising revenue goes directly toward our tree-planting initiatives. This sustainable model allows us to keep the extension completely free for users while making a positive environmental impact.</p>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="download" class="download" data-aos="fade-up" aria-label="Download TabForest">
-            <div class="container">
-                <h2>Join the Movement</h2>
-                <p>Install TabForest and start making a difference with every tab.</p>
-                <div class="download-buttons">
-                    <a href="#" class="browser-btn chrome" role="button" aria-label="Download for Chrome">
-                        <i class="fab fa-chrome" aria-hidden="true" title="Chrome"></i>
-                        Chrome
-                    </a>
-                    <a href="#" class="browser-btn firefox" role="button" aria-label="Download for Firefox">
-                        <i class="fab fa-firefox-browser" aria-hidden="true" title="Firefox"></i>
-                        Firefox
-                    </a>
-                    <a href="#" class="browser-btn safari" role="button" aria-label="Download for Safari">
-                        <i class="fab fa-safari" aria-hidden="true" title="Safari"></i>
-                        Safari
-                    </a>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        <span class="faq-number">2.</span>
+                        <h3>How are trees planted?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We partner with certified reforestation organizations like One Tree Planted and Arbor Day Foundation. Trees are planted in areas affected by deforestation, typically during planting seasons to ensure maximum survival rates. Each month, we allocate funds based on user activity and sponsor matching programs to plant thousands of trees worldwide.</p>
+                    </div>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        <span class="faq-number">3.</span>
+                        <h3>Who verifies the impact?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our tree-planting partners provide regular reports including GPS coordinates of planting sites, species planted, and survival rates. We also work with independent auditors to verify these reports. Every quarter, we publish a transparency report on our website showing exactly how many trees were planted and where.</p>
+                    </div>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        <span class="faq-number">4.</span>
+                        <h3>Do I have to click ads?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No, you never need to click ads to support our mission. We earn revenue simply by displaying sponsored content in your new tab page. The ads are carefully curated to be relevant and unobtrusive. You can browse normally while still contributing to reforestation efforts with each new tab you open.</p>
+                    </div>
+                </div>
+                <div class="faq-card">
+                    <div class="faq-question">
+                        <span class="faq-number">5.</span>
+                        <h3>Is my data safe?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Your privacy is our top priority. We do not collect personal browsing history or sell your data to third parties. All analytics are anonymized and used solely to improve the extension and report impact statistics. For more details, see our privacy policy.</p>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
-
-    <footer role="contentinfo">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>TabForest</h3>
-                    <p>Transform your browsing into real-world impact.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <nav aria-label="Footer navigation">
-                        <a href="#how-it-works">How It Works</a>
-                        <a href="#impact">Impact</a>
-                        <a href="#download">Download</a>
-                    </nav>
-                </div>
-                <div class="footer-section">
-                    <h3>Connect</h3>
-                    <div class="social-links">
-                        <a href="#" data-aos="fade-up" data-aos-delay="100" aria-label="Follow us on Twitter">
-                            <i class="fab fa-twitter" aria-hidden="true" title="Twitter"></i>
-                        </a>
-                        <a href="#" data-aos="fade-up" data-aos-delay="200" aria-label="Follow us on Instagram">
-                            <i class="fab fa-instagram" aria-hidden="true" title="Instagram"></i>
-                        </a>
-                        <a href="#" data-aos="fade-up" data-aos-delay="300" aria-label="Follow us on LinkedIn">
-                            <i class="fab fa-linkedin" aria-hidden="true" title="LinkedIn"></i>
-                        </a>
-                    </div>
-                </div>
+    <footer>
+        <div class="footer-content">
+            <a href="/" class="footer-logo">TabForest</a>
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#impact">Impact</a>
+                <a href="#download">Download</a>
+                <a href="#faq">FAQ</a>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 TabForest. All rights reserved.</p>
-            </div>
+            <div class="footer-copy">&copy; 2025 TabForest. All rights reserved.</div>
         </div>
     </footer>
-
-    <script src="https://unpkg.com/aos@next/dist/aos.js" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

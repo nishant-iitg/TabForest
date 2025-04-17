@@ -78,34 +78,54 @@ function displayCounters(totalTabs, treesPlanted, fundsCollected, totalTrees) {
 }
 
 // Function to create a quick link
-function createQuickLink(label, url, type = 'default', icon = 'icons/link.png') {
+function createQuickLink(label, url, type = 'default', icon = 'icons/link.png', index = null) {
     const link = document.createElement('div');
     link.className = `quick-link ${type}`;
-    
+
     if (type === 'default') {
         link.innerHTML = `
             <img src="${chrome.runtime.getURL(icon)}" alt="${label} icon">
             <span>${label}</span>
+            <button class="quick-link-x" title="Remove">&times;</button>
         `;
+        // Main link click (excluding the X)
         link.addEventListener('click', (e) => {
+            if (e.target.classList.contains('quick-link-x')) return;
             e.preventDefault();
             e.stopPropagation();
-            
-            // Update the current tab's URL
             chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                 if (tabs[0]) {
                     chrome.tabs.update(tabs[0].id, { url });
                 }
             });
         });
+        // X button click
+        const xBtn = link.querySelector('.quick-link-x');
+        if (xBtn) {
+            xBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                chrome.storage.local.get('quickLinks', (result) => {
+                    const links = result.quickLinks || DEFAULT_QUICK_LINKS;
+                    if (index !== null && index >= 0 && index < links.length) {
+                        links.splice(index, 1);
+                        chrome.storage.local.set({ quickLinks: links });
+                        loadQuickLinks();
+                    }
+                });
+            });
+        }
     } else if (type === 'add-link') {
         link.innerHTML = `
             <img src="${chrome.runtime.getURL('icons/plus.png')}" alt="Add">
             <span>Add Link</span>
         `;
         link.addEventListener('click', () => {
-            const newLink = prompt('Enter the URL for the new link:');
+            let newLink = prompt('Enter the URL for the new link:');
             if (newLink) {
+                // Prepend https:// if not present
+                if (!/^https?:\/\//i.test(newLink)) {
+                    newLink = 'https://' + newLink;
+                }
                 const newLabel = prompt('Enter a label for the new link:');
                 const newIcon = prompt('Enter the icon filename (e.g., google.png):') || 'icons/link.png';
                 if (newLabel) {
@@ -119,26 +139,7 @@ function createQuickLink(label, url, type = 'default', icon = 'icons/link.png') 
                 }
             }
         });
-    } else if (type === 'remove-link') {
-        link.innerHTML = `
-            <img src="${chrome.runtime.getURL('icons/remove.png')}" alt="Remove">
-            <span>Remove</span>
-        `;
-        link.addEventListener('click', () => {
-            const quickLinksContainer = document.getElementById('quickLinksContainer');
-            const quickLinks = Array.from(quickLinksContainer.children);
-            const indexToRemove = quickLinks.indexOf(link);
-            if (indexToRemove > 0) { // Don't remove the add/remove buttons
-                chrome.storage.local.get('quickLinks', (result) => {
-                    const links = result.quickLinks || DEFAULT_QUICK_LINKS;
-                    links.splice(indexToRemove - 1, 1); // Adjust index to skip buttons
-                    chrome.storage.local.set({ quickLinks: links });
-                    loadQuickLinks();
-                });
-            }
-        });
     }
-    
     return link;
 }
 
@@ -146,20 +147,13 @@ function createQuickLink(label, url, type = 'default', icon = 'icons/link.png') 
 function loadQuickLinks() {
     const quickLinksContainer = document.getElementById('quickLinksContainer');
     if (!quickLinksContainer) return;
-    
     quickLinksContainer.innerHTML = '';
-    
     chrome.storage.local.get('quickLinks', (result) => {
         const links = result.quickLinks || DEFAULT_QUICK_LINKS;
-        
-        // Add remove button
-        quickLinksContainer.appendChild(createQuickLink('', '', 'remove-link'));
-        
-        // Add default links
-        links.forEach(link => {
-            quickLinksContainer.appendChild(createQuickLink(link.label, link.url, 'default', link.icon));
+        // Add default links with X buttons
+        links.forEach((link, idx) => {
+            quickLinksContainer.appendChild(createQuickLink(link.label, link.url, 'default', link.icon, idx));
         });
-        
         // Add add button
         quickLinksContainer.appendChild(createQuickLink('', '', 'add-link'));
     });
@@ -168,6 +162,31 @@ function loadQuickLinks() {
 // Add CSS for quick links
 const quickLinkStyle = document.createElement('style');
 quickLinkStyle.textContent = `
+:root {
+    --bg: #f5f5f5;
+    --fg: #222;
+    --card-bg: #fff;
+    --card-border: #e0e0e0;
+    --quick-link-bg: #fff;
+    --quick-link-fg: #333;
+}
+body {
+    background-color: var(--bg) !important;
+    color: var(--fg) !important;
+}
+body.dark-mode {
+    --bg: #181c1f;
+    --fg: #f3f3f3;
+    --card-bg: #23272a;
+    --card-border: #23272a;
+    --quick-link-bg: #23272a;
+    --quick-link-fg: #f3f3f3;
+}
+.quick-link {
+    background: var(--quick-link-bg) !important;
+    color: var(--quick-link-fg) !important;
+}
+
     .quick-links {
         display: flex;
         flex-wrap: wrap;
@@ -199,7 +218,45 @@ quickLinkStyle.textContent = `
 
     .quick-link span {
         font-size: 0.9rem;
-        color: #333;
+        color: var(--quick-link-fg) !important;
+        padding-right: 18px; /* Space for the X button */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .quick-link-x {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: linear-gradient(135deg, #f4511e 60%, #ff9800 100%);
+        color: #fff;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(244,81,30,0.18), 0 1.5px 6px rgba(0,0,0,0.10);
+        z-index: 3;
+        opacity: 0.92;
+        transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+        outline: none;
+        border: 2px solid #333;
+        background-clip: padding-box;
+    }
+    .quick-link-x:hover {
+        background: linear-gradient(135deg, #ff9800 70%, #f4511e 100%);
+        box-shadow: 0 0 0 3px #ffe0b2, 0 2px 8px rgba(244,81,30,0.25);
+        opacity: 1;
+        transform: scale(1.18) rotate(8deg);
+    }
+    .quick-link-x:hover {
+        background: #d84315;
+        opacity: 1;
     }
 
     .quick-link.add-link {
@@ -379,6 +436,215 @@ function initializeCounters() {
 
 // Add event listeners when the page loads
 document.addEventListener('DOMContentLoaded', function() {
+    // THEME TOGGLE: Remove any existing toggle button to avoid duplicates
+    const oldToggle = document.getElementById('themeToggleBtn');
+    if (oldToggle) oldToggle.remove();
+    // Create and add theme toggle button
+    const themeToggle = document.createElement('button');
+    themeToggle.id = 'themeToggleBtn';
+    themeToggle.title = 'Toggle light/dark mode';
+    themeToggle.innerHTML = '🌙';
+    themeToggle.style.position = 'fixed';
+    themeToggle.style.top = '20px';
+    themeToggle.style.right = '32px';
+    themeToggle.style.zIndex = '9999'; // ensure always on top
+    themeToggle.style.background = 'rgba(255,255,255,0.8)';
+    themeToggle.style.border = 'none';
+    themeToggle.style.borderRadius = '50%';
+    themeToggle.style.width = '36px';
+    themeToggle.style.height = '36px';
+    themeToggle.style.fontSize = '20px';
+    themeToggle.style.cursor = 'pointer';
+    document.body.appendChild(themeToggle);
+    console.log('[TabForest] Theme toggle button created');
+
+    // CUSTOM BACKGROUND BUTTON
+    const bgBtn = document.createElement('button');
+    bgBtn.id = 'bgSetBtn';
+    bgBtn.title = 'Set background image';
+    bgBtn.innerHTML = '🖼️';
+    bgBtn.style.position = 'fixed';
+    bgBtn.style.top = '20px';
+    bgBtn.style.right = '76px';
+    bgBtn.style.zIndex = '9999';
+    bgBtn.style.background = 'rgba(255,255,255,0.8)';
+    bgBtn.style.border = 'none';
+    bgBtn.style.borderRadius = '50%';
+    bgBtn.style.width = '36px';
+    bgBtn.style.height = '36px';
+    bgBtn.style.fontSize = '20px';
+    bgBtn.style.cursor = 'pointer';
+    document.body.appendChild(bgBtn);
+
+    // Remove BG button (hidden by default)
+    const bgRemoveBtn = document.createElement('button');
+    bgRemoveBtn.id = 'bgRemoveBtn';
+    bgRemoveBtn.title = 'Remove background image';
+    bgRemoveBtn.innerHTML = '❌';
+    bgRemoveBtn.style.position = 'fixed';
+    bgRemoveBtn.style.top = '20px';
+    bgRemoveBtn.style.right = '120px';
+    bgRemoveBtn.style.zIndex = '9999';
+    bgRemoveBtn.style.background = 'rgba(255,255,255,0.8)';
+    bgRemoveBtn.style.border = 'none';
+    bgRemoveBtn.style.borderRadius = '50%';
+    bgRemoveBtn.style.width = '36px';
+    bgRemoveBtn.style.height = '36px';
+    bgRemoveBtn.style.fontSize = '20px';
+    bgRemoveBtn.style.cursor = 'pointer';
+    bgRemoveBtn.style.display = 'none';
+    document.body.appendChild(bgRemoveBtn);
+
+    // BG Overlay for readability
+    let bgOverlay = document.getElementById('bgOverlay');
+    if (!bgOverlay) {
+        bgOverlay = document.createElement('div');
+        bgOverlay.id = 'bgOverlay';
+        bgOverlay.style.position = 'fixed';
+        bgOverlay.style.top = 0;
+        bgOverlay.style.left = 0;
+        bgOverlay.style.width = '100vw';
+        bgOverlay.style.height = '100vh';
+        bgOverlay.style.zIndex = '0';
+        bgOverlay.style.pointerEvents = 'none';
+        bgOverlay.style.background = 'rgba(0,0,0,0.28)';
+        document.body.appendChild(bgOverlay);
+    }
+
+    // Helper: set/remove background
+    function setCustomBg(bg) {
+        if (bg) {
+            document.body.style.backgroundImage = `url('${bg}')`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            bgOverlay.style.display = '';
+            bgRemoveBtn.style.display = '';
+        } else {
+            document.body.style.backgroundImage = '';
+            bgOverlay.style.display = 'none';
+            bgRemoveBtn.style.display = 'none';
+        }
+    }
+
+    // On load, apply saved background
+    chrome.storage.local.get('tabforest_bg', (result) => {
+        if (result.tabforest_bg) {
+            setCustomBg(result.tabforest_bg);
+        }
+    });
+
+    // BG Set button click: show dialog
+    bgBtn.addEventListener('click', () => {
+        // Create dialog
+        let dialog = document.getElementById('bgDialog');
+        if (dialog) dialog.remove();
+        dialog = document.createElement('div');
+        dialog.id = 'bgDialog';
+        dialog.style.position = 'fixed';
+        dialog.style.top = '80px';
+        dialog.style.left = '50%';
+        dialog.style.transform = 'translateX(-50%)';
+        dialog.style.background = 'var(--card-bg)';
+        dialog.style.color = 'var(--fg)';
+        dialog.style.border = '1px solid var(--card-border)';
+        dialog.style.borderRadius = '10px';
+        dialog.style.padding = '24px 20px 18px 20px';
+        dialog.style.zIndex = '10000';
+        dialog.style.boxShadow = '0 4px 24px rgba(0,0,0,0.18)';
+        dialog.innerHTML = `
+            <div style="font-weight:bold;font-size:1.1rem;margin-bottom:0.6em;color:var(--fg) !important;">Set Background Image</div>
+            <form id="bgForm">
+                <label style="font-size:0.98em;color:var(--fg) !important;">Upload Image: <input type="file" id="bgFile" accept="image/*"></label><br><br>
+                <label style="font-size:0.98em;color:var(--fg) !important;">Image URL: <input type="url" id="bgUrl" style="width:220px;color:var(--fg) !important;background:var(--card-bg) !important;border:2px solid var(--card-border) !important;border-radius:7px !important;padding:7px 9px !important;outline:none;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#1976d2'" onblur="this.style.borderColor='var(--card-border)'"></label><br><br>
+                <button type="submit" style="margin-right:8px;color:var(--fg) !important;background:var(--card-bg) !important;border:1px solid var(--card-border) !important;">Set</button>
+                <button type="button" id="bgCancel" style="color:var(--fg) !important;background:var(--card-bg) !important;border:1px solid var(--card-border) !important;">Cancel</button>
+            </form>
+            <div id="bgError" style="color:#b71c1c;font-size:0.93em;margin-top:6px;"></div>
+        `;
+        document.body.appendChild(dialog);
+        document.getElementById('bgCancel').onclick = () => dialog.remove();
+        // Attach focus/blur listeners to url box for border color
+        const urlInput = dialog.querySelector('#bgUrl');
+        if (urlInput) {
+            urlInput.addEventListener('focus', function() {
+                this.style.borderColor = '#1976d2';
+            });
+            urlInput.addEventListener('blur', function() {
+                this.style.borderColor = 'var(--card-border)';
+            });
+        }
+        document.getElementById('bgForm').onsubmit = function(e) {
+            e.preventDefault();
+            const file = document.getElementById('bgFile').files[0];
+            const url = document.getElementById('bgUrl').value.trim();
+            const errorDiv = document.getElementById('bgError');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    chrome.storage.local.set({ tabforest_bg: evt.target.result }, () => {
+                        setCustomBg(evt.target.result);
+                        dialog.remove();
+                    });
+                };
+                reader.onerror = () => errorDiv.textContent = 'Failed to read file.';
+                reader.readAsDataURL(file);
+            } else if (url) {
+                // Validate URL is image
+                if (!/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url)) {
+                    errorDiv.textContent = 'Please enter a valid image URL.';
+                    return;
+                }
+                chrome.storage.local.set({ tabforest_bg: url }, () => {
+                    setCustomBg(url);
+                    dialog.remove();
+                });
+            } else {
+                errorDiv.textContent = 'Please select a file or enter an image URL.';
+            }
+        };
+    });
+
+    // BG Remove button click
+    bgRemoveBtn.addEventListener('click', () => {
+        chrome.storage.local.remove('tabforest_bg', () => {
+            setCustomBg(null);
+        });
+    });
+
+
+    // Helper to apply theme
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.innerHTML = '☀️';
+        } else {
+            document.body.classList.remove('dark-mode');
+            themeToggle.innerHTML = '🌙';
+        }
+        console.log('[TabForest] Theme applied:', theme, '| body.classList:', document.body.className);
+    }
+
+    // Load saved theme or system preference
+    chrome.storage.local.get('tabforest_theme', (result) => {
+        let theme = result.tabforest_theme;
+        if (!theme) {
+            theme = 'dark'; // Always default to dark mode
+        }
+        applyTheme(theme);
+    });
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        console.log('[TabForest] Theme toggle button CLICKED');
+        const isDark = document.body.classList.contains('dark-mode');
+        const newTheme = isDark ? 'light' : 'dark';
+        chrome.storage.local.set({ tabforest_theme: newTheme }, () => {
+            console.log('[TabForest] Theme set to', newTheme);
+            applyTheme(newTheme);
+        });
+    });
+
     // Initialize counters
     initializeCounters();
     
