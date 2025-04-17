@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Your Ad | TabForest</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="navbar">
+    <a href="index.html" class="logo">TabForest</a>
+  </header>
+  <main>
+    <section class="ad-for-good ad-submit-section" id="ad-submit">
+      <h2>Submit Your Ad</h2>
+      <p>Your brand can fund reforestation while gaining visibility.<br><span style="color:var(--primary);font-weight:600;">$5 = 1,000 impressions</span></p>
+      <form id="ad-submit-form" autocomplete="off">
+        <label for="ad-headline">Headline</label>
+        <input type="text" id="ad-headline" name="headline" maxlength="48" placeholder="Your Ad Headline" required />
+
+        <label for="ad-desc">Description</label>
+        <input type="text" id="ad-desc" name="description" maxlength="90" placeholder="Short description" required />
+
+        <label for="ad-img-url">Image URL</label>
+        <input type="url" id="ad-img-url" name="image_url" placeholder="https://..." required />
+
+        <label for="ad-cta">CTA Text</label>
+        <input type="text" id="ad-cta" name="cta" maxlength="18" placeholder="e.g. Learn More" required />
+
+        <label for="ad-link">Ad Link</label>
+        <input type="url" id="ad-link" name="ad_link" placeholder="https://yourbrand.com" required />
+
+        <div class="ad-pricing-fields">
+          <div>
+            <label for="ad-impressions">Impressions</label>
+            <input type="number" id="ad-impressions" name="impressions" min="1000" step="1000" value="1000" required />
+          </div>
+          <div>
+            <label for="ad-price">Price (USD)</label>
+            <input type="number" id="ad-price" name="price" min="5" step="5" value="5" required />
+          </div>
+        </div>
+        <div class="ad-pricing-note">$5 = 1,000 impressions. Change either field and the other will update automatically.</div>
+
+        <div class="ad-preview-box" id="ad-preview-box">
+          <div class="ad-preview-image" id="ad-preview-image"></div>
+          <div class="ad-preview-content">
+            <div class="ad-preview-headline" id="ad-preview-headline">Your Ad Headline</div>
+            <div class="ad-preview-desc" id="ad-preview-desc">Short description</div>
+            <a class="ad-preview-cta" id="ad-preview-cta" href="#" target="_blank" rel="noopener">Learn More</a>
+          </div>
+        </div>
+        <button type="submit" class="cta-btn" style="margin-top:2rem;">Submit Ad</button>
+      </form>
+    </section>
+  </main>
+  <script src="ad-submit.js"></script>
+</body>
+</html>

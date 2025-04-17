@@ -77,6 +77,42 @@
             <p>Start making a difference with every tab you open.</p>
             <a href="#" class="cta-btn">Install for Chrome</a>
         </section>
+        <section class="ad-for-good" id="ad-for-good">
+            <h2>Ad for Good – For Advertisers</h2>
+            <p>Your brand can fund reforestation while gaining visibility.</p>
+            <div class="ad-pricing">
+                <span>$50 for 10,000 impressions = 10 trees</span>
+            </div>
+            <a href="ad-submit.html" class="cta-btn" id="ad-get-started">Get Started</a>
+            <div class="ad-preview">
+                <h3>Preview your ad</h3>
+                <form id="ad-preview-form" autocomplete="off">
+                  <label for="ad-headline">Headline</label>
+                  <input type="text" id="ad-headline" maxlength="48" placeholder="Your Ad Headline" />
+
+                  <label for="ad-desc">Description</label>
+                  <input type="text" id="ad-desc" maxlength="90" placeholder="Short description" />
+
+                  <label for="ad-img-url">Image URL</label>
+                  <input type="url" id="ad-img-url" placeholder="https://..." />
+
+                  <label for="ad-cta">CTA Text</label>
+                  <input type="text" id="ad-cta" maxlength="18" placeholder="e.g. Learn More" />
+
+                  <label for="ad-link">Ad Link</label>
+                  <input type="url" id="ad-link" placeholder="https://yourbrand.com" />
+                </form>
+                <div class="ad-preview-box" id="ad-preview-box">
+                  <!-- Live preview will be rendered here by JS -->
+                  <div class="ad-preview-image" id="ad-preview-image"></div>
+                  <div class="ad-preview-content">
+                    <div class="ad-preview-headline" id="ad-preview-headline">Your Ad Headline</div>
+                    <div class="ad-preview-desc" id="ad-preview-desc">Short description</div>
+                    <a class="ad-preview-cta" id="ad-preview-cta" href="#" target="_blank" rel="noopener">Learn More</a>
+                  </div>
+                </div>
+            </div>
+        </section>
         <section class="faq-section" id="faq">
             <h2>Frequently Asked Questions</h2>
             <div class="faq-grid">
@@ -141,5 +177,31 @@
         </div>
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" crossorigin="anonymous"></script>
+
+    <!-- Ad for Good Modal Contact Form -->
+    <div id="ad-modal-overlay" class="ad-modal-overlay" tabindex="-1" aria-hidden="true">
+      <div class="ad-modal" role="dialog" aria-modal="true" aria-labelledby="ad-modal-title">
+        <button class="ad-modal-close" id="ad-modal-close" aria-label="Close">&times;</button>
+        <h2 id="ad-modal-title">Get Started with Ad for Good</h2>
+        <form id="ad-contact-form" action="https://formspree.io/f/your-form-id" method="POST">
+          <label for="ad-name">Name</label>
+          <input type="text" id="ad-name" name="name" required>
+
+          <label for="ad-email">Email</label>
+          <input type="email" id="ad-email" name="email" required>
+
+          <label for="ad-brand-url">Brand/Ad URL</label>
+          <input type="url" id="ad-brand-url" name="brand_url" placeholder="https://yourbrand.com" required>
+
+          <label for="ad-message">Message</label>
+          <textarea id="ad-message" name="message" rows="4" required></textarea>
+
+          <button type="submit" class="cta-btn">Submit</button>
+        </form>
+      </div>
+    </div>
+    <!-- End Modal -->
+    <script src="ad-modal.js"></script>
+    <script src="ad-preview.js"></script>
 </body>
 </html>
